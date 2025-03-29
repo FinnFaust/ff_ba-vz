@@ -10576,35 +10576,19 @@ parcelRequire = function(e, r, t, n) {
                 height: e
             }
         }, u.prototype.calculateAspectRatioFactor = function(e, t) {
-            var i = this.getPlaneSize(),
-                // Use container dimensions if available (already handled in your modifications)
-                r = container ? container.offsetWidth / container.offsetHeight : window.innerWidth / window.innerHeight,
-                n = i.width / i.height * r,
+            var i = this.getPlaneSize();
+            // Modified: Use container dimensions for aspect ratio.
+            var container = document.querySelector('.projekte_gallery_cms-wrapper');
+            var aspect = container ? container.offsetWidth / container.offsetHeight : window.innerWidth / window.innerHeight;
+            var n = i.width / i.height * aspect,
                 o = t.image.width / t.image.height,
                 a = 1,
                 h = 1;
-            if (n > o) {
-                a = 1, h = n / o;  // Use n/o instead of 1/n * o
-            } else {
-                a = o / n, h = 1;  // Use o/n instead of n/o
-            }
-            this.factors[e] = new s.Vector2(a, h);
-            // Update uniforms for the current and next texture factors as needed:
-            if (this.currentIndex === e) {
-                this.mesh.material.uniforms.u_textureFactor.value = this.factors[e];
-                this.mesh.material.uniforms.u_textureFactor.needsUpdate = !0;
-            }
-            if (this.nextIndex === e) {
-                this.mesh.material.uniforms.u_texture2Factor.value = this.factors[e];
-                this.mesh.material.uniforms.u_texture2Factor.needsUpdate = !0;
-            }
-            if (this.initialRender) {
-                this.loadedEntries++;
-                if (this.loadedEntries === this.totalEntries) {
-                    document.body.classList.remove("loading");
-                }
-                this.render();
-            }
+            n > o ? (a = 1, h = 1 / n * o) : (a = n / o, h = 1), 
+            this.factors[e] = new s.Vector2(a, h), 
+            this.currentIndex === e && (this.mesh.material.uniforms.u_textureFactor.value = this.factors[e], this.mesh.material.uniforms.u_textureFactor.needsUpdate = !0), 
+            this.nextIndex === e && (this.mesh.material.uniforms.u_texture2Factor.value = this.factors[e], this.mesh.material.uniforms.u_texture2Factor.needsUpdate = !0), 
+            this.initialRender && (this.loadedEntries++, this.loadedEntries === this.totalEntries && document.body.classList.remove("loading"), this.render())
         }, u.prototype.createPlane = function() {
             this.getViewSize();
             var e = this.getPlaneSize(),
