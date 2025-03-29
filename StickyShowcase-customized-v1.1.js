@@ -10572,8 +10572,8 @@ parcelRequire = function(e, r, t, n) {
         }, u.prototype.getPlaneSize = function() {
             var e = this.getViewSize();
             return {
-                width: 3 * e,
-                height: 2 * e
+                width: 1.5 * e,
+                height: e
             }
         }, u.prototype.calculateAspectRatioFactor = function(e, t) {
             var i = this.getPlaneSize(),
